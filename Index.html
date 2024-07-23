@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cálculo de Sensores</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+        .image-container {
+            flex: 0 0 auto;
+            text-align: left;
+        }
+        .form-container {
+            flex: 1;
+            margin-left: 20px;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        .form-group label {
+            margin-right: 10px;
+            display: inline-block;
+            width: 100px; /* Ajustar para alineación */
+        }
+        .form-group input {
+            width: 60px; /* Ancho ajustado para cuatro dígitos */
+        }
+        .result-container h2 {
+            font-size: 1em;
+            font-weight: bold; /* Negrita */
+        }
+        .result-container span {
+            font-weight: bold; /* Negrita */
+        }
+        h2, p {
+            font-weight: bold; /* Negrita */
+        }
+        .result-text {
+            font-size: 1.2em; /* Tamaño de fuente igual que el de h2 */
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-container">
+            <img src="https://i.imgur.com/x6cjqk5.jpeg" alt="Imagen desde Imgur">
+        </div>
+
+        <div class="form-container">
+            <h2>Introduce la medición de dos variables.</h2>
+            <p style="margin-top: 0;">Calcularemos el valor de la tercera.</p>
+            <div class="form-group">
+                <label for="cloro">Cloro (ppm):</label>
+                <input type="number" id="cloro" name="cloro">
+            </div>
+            <div class="form-group">
+                <label for="ph">pH:</label>
+                <input type="number" id="ph" name="ph">
+            </div>
+            <div class="form-group">
+                <label for="redox">Redox (mV):</label>
+                <input type="number" id="redox" name="redox">
+            </div>
+            <button onclick="calculateMissing()">Calcular</button>
+            <div class="result-container">
+                <p class="result-text">Resultado:</p>
+                <span id="result"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateMissing() {
+            var cloro = parseFloat(document.getElementById('cloro').value);
+            var ph = parseFloat(document.getElementById('ph').value);
+            var redox = parseFloat(document.getElementById('redox').value);
+
+            var resultText = "Por favor, introduce exactamente dos valores.";
+            if (!isNaN(cloro) && !isNaN(ph) && isNaN(redox)) {
+                redox = 650 + 100 * Math.log10(cloro) - (ph - 7) * 59.16 + 0.1 * (23 - 25);
+                resultText = "El valor de Redox es: " + redox.toFixed(2) + " mV";
+            } else if (!isNaN(cloro) && isNaN(ph) && !isNaN(redox)) {
+                ph = ((redox - 650 - 100 * Math.log10(cloro) + 0.1 * (23 - 25)) / 59.16) + 7;
+                resultText = "El valor de pH es: " + ph.toFixed(2);
+            } else if (isNaN(cloro) && !isNaN(ph) && !isNaN(redox)) {
+                cloro = Math.pow(10, ((redox - 650 + (ph - 7) * 59.16 - 0.1 * (23 - 25)) / 100));
+                resultText = "El valor de Cloro es: " + cloro.toFixed(2) + " ppm";
+            }
+
+            document.getElementById('result').textContent = resultText;
+        }
+    </script>
+</body>
+</html>
