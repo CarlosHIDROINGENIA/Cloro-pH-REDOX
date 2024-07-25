@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Relación Cloro-pH-REDOX</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 3em;
+        }
+        @media (min-width: 768px) {
+            .container {
+                flex-direction: row;
+                align-items: flex-start;
+                gap: 0;
+            }
+        }
+        .image-container {
+            flex: 0 0 100%;
+            text-align: left;
+            padding-right: 0;
+        }
+        @media (min-width: 768px) {
+            .image-container {
+                flex: 0 0 56%;
+            }
+        }
+        .form-container {
+            flex: 1;
+            margin-left: 0;
+            width: 100%;
+        }
+        .form-group {
+            margin-bottom: 1.5em;
+        }
+        .form-group:first-of-type {
+            margin-top: 2em;
+        }
+        .form-group label {
+            margin-right: 10px;
+            display: inline-block;
+            width: 100px;
+        }
+        .form-group input[type="range"] {
+            width: 100%;
+        }
+        .form-group output {
+            display: inline-block;
+            width: 60px;
+            text-align: right;
+        }
+        h2, p {
+            font-weight: bold;
+            margin: 0;
+        }
+        .result-text {
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+        #cloroRedoxChart {
+            width: 100%;
+            height: 350px;
+        }
+        @media (min-width: 768px) {
+            #cloroRedoxChart {
+                height: 702px;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="image-container">
+            <canvas id="cloroRedoxChart"></canvas>
+        </div>
+
+        <div class="form-container">
+            <h2>Introduce la medición de variables.</h2>
+            <p style="margin-top: 0;">Cloro y REDOX se recalculan en función del nivel de pH.</p>
+
+            <div class="form-group">
+                <label for="ph">pH:</label>
+                <input type="range" id="ph" name="ph" min="5" max="9" step="0.1" value="7.3" oninput="updateValues()" onchange="updateValues()">
+                <output id="phOutput">7.3</output>
+            </div>
+            <div class="form-group">
+                <label for="cloro">Cloro (ppm):</label>
+                <input type="range" id="cloro" name="cloro" min="0" max="25" step="0.1" value="1.5" oninput="updateValues()" onchange="updateValues()">
+                <output id="cloroOutput">1.5</output>
+            </div>
+            <div class="form-group">
+                <label for="redox">Redox (mV):</label>
+                <input type="range" id="redox" name="redox" min="400" max="900" step="1" value="650" oninput="updateValues()" onchange="updateValues()">
+                <output id="redoxOutput">650</output>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('cloroRedoxChart').getContext('2d');
+        
+        let chart = new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    data: [],
+                    backgroundColor: 'red',
+                    pointRadius: 10
+                },
+                {
+                    data: [],
+                    type: 'line',
+                    borderColor: 'blue',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: {
+                            display: true,
+                            text: 'Cloro (ppm)'
+                        },
+                        min: 0,
+                        max: 12
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Redox (mV)'
+                        },
+                        min: 400,
+                        max: 900
+                    }
+                }
+            }
+        });
+
+        function updateValues() {
+            const ph = parseFloat(document.getElementById('ph').value);
+            const cloro = parseFloat(document.getElementById('cloro').value);
+            const redox = parseFloat(document.getElementById('redox').value);
+
+            console.log(`PH: ${ph}, Cloro: ${cloro}, Redox: ${redox}`);
+
+            if (document.activeElement.id === 'ph') {
+                const updatedCloro = calculateCloro(ph, redox);
+                document.getElementById('cloro').value = updatedCloro.toFixed(2);
+                document.getElementById('cloroOutput').value = updatedCloro.toFixed(2);
+            } else if (document.activeElement.id === 'cloro') {
+                const updatedRedox = calculateRedox(cloro, ph);
+                document.getElementById('redox').value = updatedRedox.toFixed(0);
+                document.getElementById('redoxOutput').value = updatedRedox.toFixed(0);
+            } else if (document.activeElement.id === 'redox') {
+                const updatedCloro = calculateCloro(ph, redox);
+                document.getElementById('cloro').value = updatedCloro.toFixed(2);
+                document.getElementById('cloroOutput').value = updatedCloro.toFixed(2);
+            }
+
+            document.getElementById('phOutput').value = ph;
+
+            updateChart(parseFloat(document.getElementById('cloro').value), parseFloat(document.getElementById('redox').value), ph);
+        }
+
+        function calculateCloro(ph, redox) {
+            return Math.pow(10, ((redox - 650 + (ph - 7) * 59.16 - 0.1 * (23 - 25)) / 100));
+        }
+
+        function calculateRedox(cloro, ph) {
+            return 650 + 100 * Math.log10(cloro) - (ph - 7) * 59.16 + 0.1 * (23 - 25);
+        }
+
+        function updateChart(cloro, redox, ph) {
+            // Generate data for the line
+            let lineData = [];
+            for (let c = 0; c <= 12; c += 0.1) {
+                let r = 650 + 100 * Math.log10(c) - (ph - 7) * 59.16 + 0.1 * (23 - 25);
+                if (r >= 400 && r <= 900) {
+                    lineData.push({ x: c, y: r });
+                }
+            }
+
+            // Update chart data
+            chart.data.datasets[0].data = [{ x: cloro, y: redox }];
+            chart.data.datasets[1].data = lineData;
+            chart.update();
+        }
+
+        // Initialize display
+        updateValues();
+    </script>
+</body>
+</html>
