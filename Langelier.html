@@ -163,9 +163,9 @@
             var IL_TDS = ph - ((9.3 + (Math.log10(tds) - 1) / 10 + (-13.12 * Math.log10(temperature + 273.15) + 34.55)) - (Math.log10(calcium) - 0.4 + Math.log10(alkalinity)));
 
 
-            document.getElementById('resultTF').innerHTML = 'IL (sin TDS): ' + IL_sin_TDS.toFixed(6) + ' <a href="https://i.imgur.com/630GaIp.jpg" target="_blank">Ver imagen</a>';
-            document.getElementById('resultIL').innerHTML = 'IL (con TDS): ' + IL_TDS.toFixed(6) + ' <a href="https://i.imgur.com/IVsJitx.png" target="_blank">Ver imagen</a>';
-
+            document.getElementById('resultTF').innerHTML = '<a href="https://i.imgur.com/630GaIp.jpg" target="_blank">IL (sin TDS): ' + IL_sin_TDS.toFixed(6) + '</a>';
+            document.getElementById('resultIL').innerHTML = '<a href="https://i.imgur.com/IVsJitx.png" target="_blank">IL (con TDS): ' + IL_TDS.toFixed(6) + '</a>';
+            
         }
 
 
