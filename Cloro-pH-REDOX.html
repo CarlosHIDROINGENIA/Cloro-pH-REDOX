@@ -136,7 +136,7 @@
     </div>
 
     <script>
-        // Hanna Model
+        // Configuración del gráfico
         const ctxHanna = document.getElementById('cloroRedoxChartHanna').getContext('2d');
         let chartHanna = new Chart(ctxHanna, {
             type: 'scatter',
@@ -187,15 +187,17 @@
         function syncInput(sliderId, inputId) {
             const slider = document.getElementById(sliderId);
             const input = document.getElementById(inputId);
-            input.value = slider.value;
+            input.value = parseFloat(slider.value).toFixed(1); // Asegurar que el valor tenga un decimal
             updateValues();
         }
 
         function syncSlider(inputId, sliderId) {
             const input = document.getElementById(inputId);
             const slider = document.getElementById(sliderId);
-            slider.value = input.value;
-            updateValues();
+            if (!isNaN(input.value) && input.value !== "") {
+                slider.value = parseFloat(input.value).toFixed(1); // Asegurar que el valor tenga un decimal
+                updateValues();
+            }
         }
 
         function updateValues() {
@@ -203,50 +205,15 @@
             const cloro = parseFloat(document.getElementById('cloroHanna').value);
             const redox = parseFloat(document.getElementById('redoxHanna').value);
 
-            updatePHHanna();
-            updateCloroHanna();
-            updateRedoxHanna();
-
-            updateChartHanna(cloro, redox, ph);
-        }
-
-        function updatePHHanna() {
-            const ph = parseFloat(document.getElementById('phHanna').value);
-            const redox = parseFloat(document.getElementById('redoxHanna').value);
+            // Recalcular valores basados en el modelo Hanna
             const calculatedCloro = calculateCloroHanna(ph, redox);
-            document.getElementById('phOutputHanna').value = ph.toFixed(1);
-
-            // Update cloro slider and output
-            document.getElementById('cloroHanna').value = calculatedCloro.toFixed(2);
-            document.getElementById('cloroOutputHanna').value = calculatedCloro.toFixed(2);
-
-            updateChartHanna(calculatedCloro, redox, ph);
-        }
-
-        function updateCloroHanna() {
-            const ph = parseFloat(document.getElementById('phHanna').value);
-            const cloro = parseFloat(document.getElementById('cloroHanna').value);
             const calculatedRedox = calculateRedoxHanna(cloro, ph);
-            document.getElementById('cloroOutputHanna').value = cloro.toFixed(1);
 
-            // Update redox slider and output
-            document.getElementById('redoxHanna').value = calculatedRedox.toFixed(0);
+            document.getElementById('phOutputHanna').value = ph.toFixed(1);
+            document.getElementById('cloroOutputHanna').value = calculatedCloro.toFixed(2);
             document.getElementById('redoxOutputHanna').value = calculatedRedox.toFixed(0);
 
-            updateChartHanna(cloro, calculatedRedox, ph);
-        }
-
-        function updateRedoxHanna() {
-            const ph = parseFloat(document.getElementById('phHanna').value);
-            const redox = parseFloat(document.getElementById('redoxHanna').value);
-            const calculatedCloro = calculateCloroHanna(ph, redox);
-            document.getElementById('redoxOutputHanna').value = redox;
-
-            // Update cloro slider and output
-            document.getElementById('cloroHanna').value = calculatedCloro.toFixed(2);
-            document.getElementById('cloroOutputHanna').value = calculatedCloro.toFixed(2);
-
-            updateChartHanna(calculatedCloro, redox, ph);
+            updateChartHanna(calculatedCloro, calculatedRedox, ph);
         }
 
         function calculateCloroHanna(ph, redox) {
@@ -258,7 +225,6 @@
         }
 
         function updateChartHanna(cloro, redox, ph) {
-            // Generate data for the line
             let lineData = [];
             for (let c = 0; c <= 8; c += 0.1) {
                 let r = calculateRedoxHanna(c, ph);
@@ -267,13 +233,12 @@
                 }
             }
 
-            // Update chart data
             chartHanna.data.datasets[0].data = [{ x: cloro, y: redox }];
             chartHanna.data.datasets[1].data = lineData;
             chartHanna.update();
         }
 
-        // Initialize Hanna Model
+        // Inicializar valores
         updateValues();
     </script>
 </body>
