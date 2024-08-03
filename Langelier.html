@@ -18,7 +18,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 50%; /* Ajustar el ancho del container */
+            width: 100%; /* Ajustar el ancho del container */
+            max-width: 600px; /* Ancho máximo para el contenedor */
         }
         .form-container {
             width: 100%;
@@ -29,15 +30,15 @@
             display: flex;
             align-items: center;
             margin-bottom: 1em; /* Reducir espacio entre sliders */
+            width: 100%;
         }
         .form-group label {
-            margin-right: 10px;
-            width: 150px;
+            width: 120px; /* Ancho fijo igual al de "Temperatura" */
             text-align: left;
             font-size: 1.125em; /* Reducir tamaño de las etiquetas en un 25% */
         }
         .form-group input[type="range"] {
-            flex: 0.7; /* Reducir la longitud del slider un 30% */
+            flex: 1; /* Permite que el slider ocupe el espacio restante */
             height: 30px; /* Altura del control deslizante */
             margin: 0 10px;
             appearance: none;
@@ -108,22 +109,22 @@
                 <input type="number" id="phOutput" min="5" max="9" step="0.1" value="7.4" oninput="syncSlider('phOutput', 'ph')">
             </div>
             <div class="form-group">
-                <label for="alkalinity">Alcalinidad (ppm CaCO₃):</label>
+                <label for="alkalinity">Alcalinidad:</label>
                 <input type="range" id="alkalinity" name="alkalinity" min="0" max="500" step="1" value="100" oninput="syncInput('alkalinity', 'alkalinityOutput')" onchange="syncInput('alkalinity', 'alkalinityOutput')">
                 <input type="number" id="alkalinityOutput" min="0" max="500" step="1" value="100" oninput="syncSlider('alkalinityOutput', 'alkalinity')">
             </div>
             <div class="form-group">
-                <label for="calcium">Dureza (ppm CaCO₃):</label>
+                <label for="calcium">Dureza:</label>
                 <input type="range" id="calcium" name="calcium" min="0" max="500" step="1" value="250" oninput="syncInput('calcium', 'calciumOutput')" onchange="syncInput('calcium', 'calciumOutput')">
                 <input type="number" id="calciumOutput" min="0" max="500" step="1" value="250" oninput="syncSlider('calciumOutput', 'calcium')">
             </div>
             <div class="form-group">
-                <label for="tds">TDS (ppm):</label>
+                <label for="tds">TDS:</label>
                 <input type="range" id="tds" name="tds" min="0" max="2000" step="10" value="40" oninput="syncInput('tds', 'tdsOutput')" onchange="syncInput('tds', 'tdsOutput')">
                 <input type="number" id="tdsOutput" min="0" max="2000" step="10" value="40" oninput="syncSlider('tdsOutput', 'tds')">
             </div>
             <div class="form-group">
-                <label for="temperature">Temperatura (°C):</label>
+                <label for="temperature">Temperatura:</label>
                 <input type="range" id="temperature" name="temperature" min="0" max="40" step="0.1" value="25" oninput="syncInput('temperature', 'temperatureOutput')" onchange="syncInput('temperature', 'temperatureOutput')">
                 <input type="number" id="temperatureOutput" min="0" max="40" step="0.1" value="25" oninput="syncSlider('temperatureOutput', 'temperature')">
             </div>
