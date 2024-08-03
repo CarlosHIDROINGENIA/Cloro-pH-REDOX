@@ -84,18 +84,29 @@
             font-weight: bold;
             margin: 0;
         }
+        .result-container h3 {
+            font-size: 1.875em; /* Aumentar tamaño de fuente en un 25% */
+        }
         .result-container p {
             font-size: 1.35em; /* Reducir tamaño de fuente de los resultados en un 25% */
+            display: flex;
+            justify-content: space-between;
+            margin: 0;
+        }
+        .result-value {
+            color: red;
+            margin-left: 2em; /* Separación de 3 caracteres */
         }
         .footer-text {
-            font-size: 10px;
+            font-size: 12px;
             font-style: italic;
+            font-weight: bold;
             margin-top: 20px;
             text-align: left;
             line-height: 1.4;
         }
         .footer-text .tabbed {
-            margin-left: 2em; /* Añade tabulación a las tres últimas líneas */
+            margin-left: 15ch; /* Tabulación de aproximadamente 15 caracteres */
         }
         .spacer {
             height: 2em; /* Añadir un espacio vertical */
@@ -140,9 +151,9 @@
             </div>
         </div>
         <div class="result-container">
-            <h3 style="font-size: 1.5em;">Resultados</h3>
-            <p id="resultTF">*IL (sin TDS): </p>
-            <p id="resultIL">*IL (con TDS): </p>
+            <h3>Resultados:</h3>
+            <p id="resultTF">*IL (sin TDS): <span class="result-value" id="resultTFValue">0.00</span></p>
+            <p id="resultIL">*IL (con TDS): <span class="result-value" id="resultILValue">0.00</span></p>
         </div>
         <div class="footer-text">
             * Pinchar sobre cada resultado para abrir enlace explicativo de metodología de cálculo.<br>
@@ -189,9 +200,8 @@
             // Cálculo del índice de saturación de Langelier con TDS (J2)
             var IL_TDS = ph - ((9.3 + (Math.log10(tds) - 1) / 10 + (-13.12 * Math.log10(temperature + 273.15) + 34.55)) - (Math.log10(calcium) - 0.4 + Math.log10(alkalinity)));
 
-            document.getElementById('resultTF').innerHTML = '<a href="https://i.imgur.com/630GaIp.jpg" target="_blank">*IL (sin TDS): ' + IL_sin_TDS.toFixed(6) + '</a>';
-            document.getElementById('resultIL').innerHTML = '<a href="https://i.imgur.com/IVsJitx.png" target="_blank">*IL (con TDS): ' + IL_TDS.toFixed(6) + '</a>';
-            
+            document.getElementById('resultTFValue').innerHTML = IL_sin_TDS.toFixed(2);
+            document.getElementById('resultILValue').innerHTML = IL_TDS.toFixed(2);
         }
 
         // Initialize display
