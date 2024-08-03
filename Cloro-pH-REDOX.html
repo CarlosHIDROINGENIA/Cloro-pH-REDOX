@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
     <title>Cloro-pH-REDOX</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Incluir la fuente desde Google Fonts -->
@@ -184,14 +185,17 @@
         });
 
         function syncSlider(inputId, sliderId, callback) {
-            var input = document.getElementById(inputId);
-            var slider = document.getElementById(sliderId);
-            var value = input.value.replace(',', '.'); // Convertir coma a punto para cálculos
+            const input = document.getElementById(inputId);
+            const slider = document.getElementById(sliderId);
+            const value = input.value.replace(',', '.'); // Convertir coma a punto para cálculos
 
             // Validar la entrada para permitir solo números y una coma
             if (/^\d*(,\d*)?$/.test(input.value)) {
                 slider.value = parseFloat(value);
                 callback();
+            } else {
+                // Eliminar caracteres no válidos
+                input.value = input.value.slice(0, -1);
             }
         }
 
