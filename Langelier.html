@@ -91,8 +91,11 @@
             font-size: 10px;
             font-style: italic;
             margin-top: 20px;
-            text-align: center;
+            text-align: left;
             line-height: 1.4;
+        }
+        .footer-text .tabbed {
+            margin-left: 2em; /* Añade tabulación a las tres últimas líneas */
         }
         .spacer {
             height: 2em; /* Añadir un espacio vertical */
@@ -137,16 +140,15 @@
             </div>
         </div>
         <div class="result-container">
-            <h3 style="font-size: 1.5em;">Resultado:</h3>
-            <p id="resultTF">IL (sin TDS): </p>
-            <p id="resultIL">IL (con TDS): </p>
+            <h3 style="font-size: 1.5em;">Resultados</h3>
+            <p id="resultTF">*IL (sin TDS): </p>
+            <p id="resultIL">*IL (con TDS): </p>
         </div>
         <div class="footer-text">
             * Pinchar sobre cada resultado para abrir enlace explicativo de metodología de cálculo.<br>
-            Unidades:<br>
-            Alcalinidad y Dureza: ppm CaCO₃<br>
-            TDS: ppm<br>
-            Temperatura: ºC
+            <span class="tabbed">Alcalinidad y Dureza: ppm CaCO₃</span><br>
+            <span class="tabbed">TDS: ppm</span><br>
+            <span class="tabbed">Temperatura: ºC</span>
         </div>
     </div>
 
@@ -187,8 +189,8 @@
             // Cálculo del índice de saturación de Langelier con TDS (J2)
             var IL_TDS = ph - ((9.3 + (Math.log10(tds) - 1) / 10 + (-13.12 * Math.log10(temperature + 273.15) + 34.55)) - (Math.log10(calcium) - 0.4 + Math.log10(alkalinity)));
 
-            document.getElementById('resultTF').innerHTML = '<a href="https://i.imgur.com/630GaIp.jpg" target="_blank">IL (sin TDS): ' + IL_sin_TDS.toFixed(6) + '</a>';
-            document.getElementById('resultIL').innerHTML = '<a href="https://i.imgur.com/IVsJitx.png" target="_blank">IL (con TDS): ' + IL_TDS.toFixed(6) + '</a>';
+            document.getElementById('resultTF').innerHTML = '<a href="https://i.imgur.com/630GaIp.jpg" target="_blank">*IL (sin TDS): ' + IL_sin_TDS.toFixed(6) + '</a>';
+            document.getElementById('resultIL').innerHTML = '<a href="https://i.imgur.com/IVsJitx.png" target="_blank">*IL (con TDS): ' + IL_TDS.toFixed(6) + '</a>';
             
         }
 
