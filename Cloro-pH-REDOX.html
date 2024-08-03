@@ -83,7 +83,7 @@
         .functions-text {
             text-align: left;
             margin-top: 1em;
-            font-size: 12px;
+            font-size: 10px;
         }
         .functions-text p {
             margin: 0;
@@ -188,7 +188,8 @@
             var slider = document.getElementById(sliderId);
             var value = input.value.replace(',', '.'); // Convertir coma a punto para cálculos
 
-            if (!isNaN(value) && value !== '') {
+            // Validar la entrada para permitir solo números y una coma
+            if (/^\d*(,\d*)?$/.test(input.value)) {
                 slider.value = parseFloat(value);
                 callback();
             }
