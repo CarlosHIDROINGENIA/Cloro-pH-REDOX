@@ -17,7 +17,7 @@
         .container {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start; /* Alinear a la izquierda */
             width: 100%; /* Ajustar el ancho del container */
             max-width: 600px; /* Ancho máximo para el contenedor */
         }
@@ -87,6 +87,7 @@
         .result-container h3 {
             font-size: 1.875em; /* Aumentar tamaño de fuente en un 25% */
             margin-bottom: 10px;
+            text-align: left; /* Alinear a la izquierda */
         }
         .result-container .result {
             display: flex;
@@ -98,6 +99,7 @@
         .result-label {
             flex: 1;
             font-size: 1.35em;
+            text-align: left; /* Alinear a la izquierda */
         }
         .result-value {
             color: red;
@@ -118,7 +120,7 @@
         }
         .page-title {
             font-size: 1.875em; /* Reducir tamaño del texto del título en un 25% */
-            text-align: center; /* Centra el título */
+            text-align: left; /* Alinear a la izquierda */
             margin-top: 0;
         }
     </style>
@@ -167,8 +169,7 @@
             </div>
         </div>
         <div class="footer-text">
-* Pinchar sobre cada resultado para abrir
-  enlace explicativo de metodología de cálculo.
+* Pinchar sobre cada resultado para abrir enlace explicativo de metodología de cálculo.
   Unidades de medida:
     Alcalinidad: ppm CaCO₃
     Dureza:      ppm CaCO₃
