@@ -86,19 +86,23 @@
         }
         .result-container h3 {
             font-size: 1.875em; /* Aumentar tamaño de fuente en un 25% */
+            margin-bottom: 10px;
         }
-        .result-container p {
-            font-size: 1.35em; /* Reducir tamaño de fuente de los resultados en un 25% */
+        .result-container .result {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            margin: 0;
+            width: 100%;
+            margin-bottom: 0.5em;
+        }
+        .result-label {
+            flex: 1;
+            font-size: 1.35em;
         }
         .result-value {
             color: red;
-            margin-left: 2em; /* Separación de 3 caracteres */
-        }
-        .result-value.il-sin-tds {
-            margin-left: 3em; /* Añadir un carácter más de separación */
+            font-size: 1.35em;
+            margin-left: 10px; /* Espacio para separar el resultado */
         }
         .footer-text {
             font-size: 12px;
@@ -155,14 +159,14 @@
         </div>
         <div class="result-container">
             <h3>Resultados:</h3>
-            <p id="resultTF">
-                *IL (sin TDS): 
-                <a href="https://i.imgur.com/630GaIp.jpg" target="_blank" class="result-value il-sin-tds" id="resultTFValue">0.00</a>
-            </p>
-            <p id="resultIL">
-                *IL (con TDS): 
+            <div class="result">
+                <span class="result-label">*IL (sin TDS):</span>
+                <a href="https://i.imgur.com/630GaIp.jpg" target="_blank" class="result-value" id="resultTFValue">0.00</a>
+            </div>
+            <div class="result">
+                <span class="result-label">*IL (con TDS):</span>
                 <a href="https://i.imgur.com/IVsJitx.png" target="_blank" class="result-value" id="resultILValue">0.00</a>
-            </p>
+            </div>
         </div>
         <div class="footer-text">
             * Pinchar sobre cada resultado para abrir enlace explicativo de metodología de cálculo.<br>
