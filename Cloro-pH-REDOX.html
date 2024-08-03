@@ -109,18 +109,18 @@
             <br><br>
             <div class="form-group">
                 <label for="phHanna">pH:</label>
-                <input type="range" id="phHanna" name="ph" min="5" max="9" step="0.1" value="7.3" oninput="syncInput('phHanna', 'phOutputHanna')" onchange="syncInput('phHanna', 'phOutputHanna')">
-                <input type="number" id="phOutputHanna" min="5" max="9" step="0.1" value="7.3" oninput="syncSlider('phOutputHanna', 'phHanna')">
+                <input type="range" id="phHanna" name="ph" min="5" max="9" step="0.1" value="7.3" oninput="updatePHHanna()" onchange="updatePHHanna()">
+                <input type="number" id="phOutputHanna" min="5" max="9" step="0.1" value="7.3" oninput="syncSlider('phOutputHanna', 'phHanna', updatePHHanna)">
             </div>
             <div class="form-group">
                 <label for="cloroHanna">Cloro (ppm):</label>
-                <input type="range" id="cloroHanna" name="cloro" min="0" max="14" step="0.1" value="1.5" oninput="syncInput('cloroHanna', 'cloroOutputHanna')" onchange="syncInput('cloroHanna', 'cloroOutputHanna')">
-                <input type="number" id="cloroOutputHanna" min="0" max="14" step="0.1" value="1.5" oninput="syncSlider('cloroOutputHanna', 'cloroHanna')">
+                <input type="range" id="cloroHanna" name="cloro" min="0" max="14" step="0.1" value="1.5" oninput="updateCloroHanna()" onchange="updateCloroHanna()">
+                <input type="number" id="cloroOutputHanna" min="0" max="14" step="0.1" value="1.5" oninput="syncSlider('cloroOutputHanna', 'cloroHanna', updateCloroHanna)">
             </div>
             <div class="form-group">
                 <label for="redoxHanna">Redox (mV):</label>
-                <input type="range" id="redoxHanna" name="redox" min="500" max="1000" step="1" value="650" oninput="syncInput('redoxHanna', 'redoxOutputHanna')" onchange="syncInput('redoxHanna', 'redoxOutputHanna')">
-                <input type="number" id="redoxOutputHanna" min="500" max="1000" step="1" value="650" oninput="syncSlider('redoxOutputHanna', 'redoxHanna')">
+                <input type="range" id="redoxHanna" name="redox" min="500" max="1000" step="1" value="650" oninput="updateRedoxHanna()" onchange="updateRedoxHanna()">
+                <input type="number" id="redoxOutputHanna" min="500" max="1000" step="1" value="650" oninput="syncSlider('redoxOutputHanna', 'redoxHanna', updateRedoxHanna)">
             </div>
         </div>
         <div class="chart-container">
@@ -183,26 +183,50 @@
             }
         });
 
-        function syncInput(sliderId, inputId) {
-            var slider = document.getElementById(sliderId);
-            var input = document.getElementById(inputId);
-            input.value = slider.value;
-            updateValues();
-        }
-
-        function syncSlider(inputId, sliderId) {
+        function syncSlider(inputId, sliderId, callback) {
             var input = document.getElementById(inputId);
             var slider = document.getElementById(sliderId);
             slider.value = input.value;
-            updateValues();
+            callback();
         }
 
-        function updateValues() {
+        function updatePHHanna() {
+            const ph = parseFloat(document.getElementById('phHanna').value);
+            const redox = parseFloat(document.getElementById('redoxHanna').value);
+            const calculatedCloro = calculateCloroHanna(ph, redox);
+            document.getElementById('phOutputHanna').value = ph;
+
+            // Update cloro slider and output
+            document.getElementById('cloroHanna').value = calculatedCloro.toFixed(2);
+            document.getElementById('cloroOutputHanna').value = calculatedCloro.toFixed(2);
+
+            updateChartHanna(calculatedCloro, redox, ph);
+        }
+
+        function updateCloroHanna() {
             const ph = parseFloat(document.getElementById('phHanna').value);
             const cloro = parseFloat(document.getElementById('cloroHanna').value);
-            const redox = parseFloat(document.getElementById('redoxHanna').value);
+            const calculatedRedox = calculateRedoxHanna(cloro, ph);
+            document.getElementById('cloroOutputHanna').value = cloro;
 
-            updateChartHanna(cloro, redox, ph);
+            // Update redox slider and output
+            document.getElementById('redoxHanna').value = calculatedRedox.toFixed(0);
+            document.getElementById('redoxOutputHanna').value = calculatedRedox.toFixed(0);
+
+            updateChartHanna(cloro, calculatedRedox, ph);
+        }
+
+        function updateRedoxHanna() {
+            const ph = parseFloat(document.getElementById('phHanna').value);
+            const redox = parseFloat(document.getElementById('redoxHanna').value);
+            const calculatedCloro = calculateCloroHanna(ph, redox);
+            document.getElementById('redoxOutputHanna').value = redox;
+
+            // Update cloro slider and output
+            document.getElementById('cloroHanna').value = calculatedCloro.toFixed(2);
+            document.getElementById('cloroOutputHanna').value = calculatedCloro.toFixed(2);
+
+            updateChartHanna(calculatedCloro, redox, ph);
         }
 
         function calculateCloroHanna(ph, redox) {
@@ -211,10 +235,6 @@
 
         function calculateRedoxHanna(cloro, ph) {
             return Math.exp(8.4626949708283 - 0.957182291338993 * Math.log(ph) + 0.0579010507063268 * Math.log(cloro));
-        }
-
-        function calculatePHHanna(cloro, redox) {
-            return 5.977 + 0.688 * Math.log(cloro) - 0.013 * redox;
         }
 
         function updateChartHanna(cloro, redox, ph) {
@@ -234,7 +254,9 @@
         }
 
         // Initialize Hanna Model
-        updateValues();
+        updatePHHanna();
+        updateCloroHanna();
+        updateRedoxHanna();
     </script>
 </body>
 </html>
