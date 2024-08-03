@@ -187,15 +187,16 @@
         function syncInput(sliderId, inputId) {
             const slider = document.getElementById(sliderId);
             const input = document.getElementById(inputId);
-            input.value = parseFloat(slider.value).toFixed(1); // Asegurar que el valor tenga un decimal
+            input.value = parseFloat(slider.value).toFixed(1);
             updateValues();
         }
 
         function syncSlider(inputId, sliderId) {
             const input = document.getElementById(inputId);
             const slider = document.getElementById(sliderId);
-            if (!isNaN(input.value) && input.value !== "") {
-                slider.value = parseFloat(input.value).toFixed(1); // Asegurar que el valor tenga un decimal
+            const value = parseFloat(input.value);
+            if (!isNaN(value)) {
+                slider.value = value.toFixed(1);
                 updateValues();
             }
         }
@@ -204,6 +205,10 @@
             const ph = parseFloat(document.getElementById('phHanna').value);
             const cloro = parseFloat(document.getElementById('cloroHanna').value);
             const redox = parseFloat(document.getElementById('redoxHanna').value);
+
+            // Recalcular valores basados en el modelo Hanna
+            const calculatedCloro = calculateCloroHanna(ph, redox);
+            const calculatedRedox = calculateRedoxHanna(cloro, ph);
 
             document.getElementById('phOutputHanna').value = ph.toFixed(1);
             document.getElementById('cloroOutputHanna').value = cloro.toFixed(1);
