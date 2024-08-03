@@ -111,17 +111,17 @@
             <div class="form-group">
                 <label for="phHanna">pH:</label>
                 <input type="range" id="phHanna" name="ph" min="5" max="9" step="0.1" value="7.3" oninput="updatePHHanna()" onchange="updatePHHanna()">
-                <input type="number" id="phOutputHanna" min="5" max="9" step="0.1" value="7.3" oninput="syncSlider('phOutputHanna', 'phHanna')">
+                <input type="number" id="phOutputHanna" min="5" max="9" step="0.1" value="7.3" onchange="syncSlider('phOutputHanna', 'phHanna')">
             </div>
             <div class="form-group">
                 <label for="cloroHanna">Cloro:</label>
                 <input type="range" id="cloroHanna" name="cloro" min="0" max="8" step="0.1" value="1.5" oninput="updateCloroHanna()" onchange="updateCloroHanna()">
-                <input type="number" id="cloroOutputHanna" min="0" max="8" step="0.1" value="1.5" oninput="syncSlider('cloroOutputHanna', 'cloroHanna')">
+                <input type="number" id="cloroOutputHanna" min="0" max="8" step="0.1" value="1.5" onchange="syncSlider('cloroOutputHanna', 'cloroHanna')">
             </div>
             <div class="form-group">
                 <label for="redoxHanna">Redox:</label>
                 <input type="range" id="redoxHanna" name="redox" min="500" max="1000" step="1" value="650" oninput="updateRedoxHanna()" onchange="updateRedoxHanna()">
-                <input type="number" id="redoxOutputHanna" min="500" max="1000" step="1" value="650" oninput="syncSlider('redoxOutputHanna', 'redoxHanna')">
+                <input type="number" id="redoxOutputHanna" min="500" max="1000" step="1" value="650" onchange="syncSlider('redoxOutputHanna', 'redoxHanna')">
             </div>
         </div>
         <div class="chart-container">
@@ -227,9 +227,14 @@
             const input = document.getElementById(inputId);
             const slider = document.getElementById(sliderId);
             const value = parseFloat(input.value);
-            if (!isNaN(value)) {
+
+            // Ensure value is valid and within range
+            if (!isNaN(value) && value >= parseFloat(slider.min) && value <= parseFloat(slider.max)) {
                 slider.value = value.toFixed(sliderId === 'redoxHanna' ? 0 : 1);
                 slider.dispatchEvent(new Event('input'));
+            } else {
+                // Reset to previous valid value if the input is invalid
+                input.value = slider.value;
             }
         }
 
