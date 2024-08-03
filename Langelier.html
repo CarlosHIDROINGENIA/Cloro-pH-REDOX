@@ -37,7 +37,7 @@
             font-size: 1.125em; /* Reducir tamaño de las etiquetas en un 25% */
         }
         .form-group input[type="range"] {
-            flex: 1;
+            flex: 0.7; /* Reducir la longitud del slider un 30% */
             height: 30px; /* Altura del control deslizante */
             margin: 0 10px;
             appearance: none;
@@ -104,28 +104,28 @@
             <div class="spacer"></div>
             <div class="form-group">
                 <label for="ph">pH:</label>
-                <input type="range" id="ph" name="ph" min="5" max="9" step="0.1" value="7.4" oninput="updateValues()" onchange="updateValues()">
-                <input type="number" id="phOutput" min="5" max="9" step="0.1" value="7.4" oninput="updateValues()">
+                <input type="range" id="ph" name="ph" min="5" max="9" step="0.1" value="7.4" oninput="syncInput('ph', 'phOutput')" onchange="syncInput('ph', 'phOutput')">
+                <input type="number" id="phOutput" min="5" max="9" step="0.1" value="7.4" oninput="syncSlider('phOutput', 'ph')">
             </div>
             <div class="form-group">
                 <label for="alkalinity">Alcalinidad (ppm CaCO₃):</label>
-                <input type="range" id="alkalinity" name="alkalinity" min="0" max="500" step="1" value="100" oninput="updateValues()" onchange="updateValues()">
-                <input type="number" id="alkalinityOutput" min="0" max="500" step="1" value="100" oninput="updateValues()">
+                <input type="range" id="alkalinity" name="alkalinity" min="0" max="500" step="1" value="100" oninput="syncInput('alkalinity', 'alkalinityOutput')" onchange="syncInput('alkalinity', 'alkalinityOutput')">
+                <input type="number" id="alkalinityOutput" min="0" max="500" step="1" value="100" oninput="syncSlider('alkalinityOutput', 'alkalinity')">
             </div>
             <div class="form-group">
                 <label for="calcium">Dureza (ppm CaCO₃):</label>
-                <input type="range" id="calcium" name="calcium" min="0" max="500" step="1" value="250" oninput="updateValues()" onchange="updateValues()">
-                <input type="number" id="calciumOutput" min="0" max="500" step="1" value="250" oninput="updateValues()">
+                <input type="range" id="calcium" name="calcium" min="0" max="500" step="1" value="250" oninput="syncInput('calcium', 'calciumOutput')" onchange="syncInput('calcium', 'calciumOutput')">
+                <input type="number" id="calciumOutput" min="0" max="500" step="1" value="250" oninput="syncSlider('calciumOutput', 'calcium')">
             </div>
             <div class="form-group">
                 <label for="tds">TDS (ppm):</label>
-                <input type="range" id="tds" name="tds" min="0" max="2000" step="10" value="40" oninput="updateValues()" onchange="updateValues()">
-                <input type="number" id="tdsOutput" min="0" max="2000" step="10" value="40" oninput="updateValues()">
+                <input type="range" id="tds" name="tds" min="0" max="2000" step="10" value="40" oninput="syncInput('tds', 'tdsOutput')" onchange="syncInput('tds', 'tdsOutput')">
+                <input type="number" id="tdsOutput" min="0" max="2000" step="10" value="40" oninput="syncSlider('tdsOutput', 'tds')">
             </div>
             <div class="form-group">
                 <label for="temperature">Temperatura (°C):</label>
-                <input type="range" id="temperature" name="temperature" min="0" max="40" step="0.1" value="25" oninput="updateValues()" onchange="updateValues()">
-                <input type="number" id="temperatureOutput" min="0" max="40" step="0.1" value="25" oninput="updateValues()">
+                <input type="range" id="temperature" name="temperature" min="0" max="40" step="0.1" value="25" oninput="syncInput('temperature', 'temperatureOutput')" onchange="syncInput('temperature', 'temperatureOutput')">
+                <input type="number" id="temperatureOutput" min="0" max="40" step="0.1" value="25" oninput="syncSlider('temperatureOutput', 'temperature')">
             </div>
         </div>
         <div class="result-container">
@@ -136,6 +136,20 @@
     </div>
 
     <script>
+        function syncInput(sliderId, inputId) {
+            var slider = document.getElementById(sliderId);
+            var input = document.getElementById(inputId);
+            input.value = slider.value;
+            updateValues();
+        }
+
+        function syncSlider(inputId, sliderId) {
+            var input = document.getElementById(inputId);
+            var slider = document.getElementById(sliderId);
+            slider.value = input.value;
+            updateValues();
+        }
+
         function updateValues() {
             var ph = parseFloat(document.getElementById('ph').value);
             var alkalinity = parseFloat(document.getElementById('alkalinity').value);
@@ -143,41 +157,8 @@
             var tds = parseFloat(document.getElementById('tds').value);
             var temperature = parseFloat(document.getElementById('temperature').value);
 
-            // Actualiza los valores de los inputs numéricos
-            document.getElementById('phOutput').value = ph;
-            document.getElementById('alkalinityOutput').value = alkalinity;
-            document.getElementById('calciumOutput').value = calcium;
-            document.getElementById('tdsOutput').value = tds;
-            document.getElementById('temperatureOutput').value = temperature;
-
             calculateLangelier(ph, alkalinity, calcium, tds, temperature);
         }
-
-        // Actualiza los valores de los sliders cuando se modifica el valor en los inputs numéricos
-        document.getElementById('phOutput').addEventListener('input', function() {
-            document.getElementById('ph').value = this.value;
-            updateValues();
-        });
-
-        document.getElementById('alkalinityOutput').addEventListener('input', function() {
-            document.getElementById('alkalinity').value = this.value;
-            updateValues();
-        });
-
-        document.getElementById('calciumOutput').addEventListener('input', function() {
-            document.getElementById('calcium').value = this.value;
-            updateValues();
-        });
-
-        document.getElementById('tdsOutput').addEventListener('input', function() {
-            document.getElementById('tds').value = this.value;
-            updateValues();
-        });
-
-        document.getElementById('temperatureOutput').addEventListener('input', function() {
-            document.getElementById('temperature').value = this.value;
-            updateValues();
-        });
 
         function calculateLangelier(ph, alkalinity, calcium, tds, temperature) {
             // Cálculo de TF (F2)
