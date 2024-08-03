@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Cálculo del Índice de Langelier</title>
+    <title>Índice de Langelier</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Incluir la fuente desde Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap">
@@ -34,7 +34,7 @@
             margin-right: 10px;
             width: 150px;
             text-align: left;
-            font-size: 1.5em; /* Ajustar tamaño de las etiquetas */
+            font-size: 1.125em; /* Reducir tamaño de las etiquetas en un 25% */
         }
         .form-group input[type="range"] {
             flex: 1;
@@ -74,9 +74,9 @@
         .form-group input[type="range"]#temperature::-webkit-slider-runnable-track {
             background: orange;
         }
-        .form-group output {
-            width: 80px; /* Ajustar las ventanas de información */
-            font-size: 1.5em; /* Aumentar tamaño de fuente */
+        .form-group input[type="number"] {
+            width: 80px; /* Ajustar el tamaño de las casillas de entrada */
+            font-size: 1.125em; /* Reducir tamaño de fuente en un 25% */
             text-align: right;
         }
         h2, p {
@@ -84,13 +84,13 @@
             margin: 0;
         }
         .result-container p {
-            font-size: 1.8em; /* Aumentar tamaño de fuente de los resultados */
+            font-size: 1.35em; /* Reducir tamaño de fuente de los resultados en un 25% */
         }
         .spacer {
             height: 2em; /* Añadir un espacio vertical */
         }
         .page-title {
-            font-size: 2.5em; /* Duplica el tamaño del texto del título */
+            font-size: 1.875em; /* Reducir tamaño del texto del título en un 25% */
             text-align: center; /* Centra el título */
             margin-top: 0;
         }
@@ -98,43 +98,42 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="page-title">Cálculo del Índice de Langelier</h1>
+        <h1 class="page-title">Índice de Langelier</h1>
         <div class="form-container">
             <div class="spacer"></div>
             <div class="spacer"></div>
             <div class="form-group">
                 <label for="ph">pH:</label>
                 <input type="range" id="ph" name="ph" min="5" max="9" step="0.1" value="7.4" oninput="updateValues()" onchange="updateValues()">
-                <output id="phOutput">7.4</output>
+                <input type="number" id="phOutput" min="5" max="9" step="0.1" value="7.4" oninput="updateValues()">
             </div>
             <div class="form-group">
                 <label for="alkalinity">Alcalinidad (ppm CaCO₃):</label>
                 <input type="range" id="alkalinity" name="alkalinity" min="0" max="500" step="1" value="100" oninput="updateValues()" onchange="updateValues()">
-                <output id="alkalinityOutput">100</output>
+                <input type="number" id="alkalinityOutput" min="0" max="500" step="1" value="100" oninput="updateValues()">
             </div>
             <div class="form-group">
                 <label for="calcium">Dureza (ppm CaCO₃):</label>
                 <input type="range" id="calcium" name="calcium" min="0" max="500" step="1" value="250" oninput="updateValues()" onchange="updateValues()">
-                <output id="calciumOutput">250</output>
+                <input type="number" id="calciumOutput" min="0" max="500" step="1" value="250" oninput="updateValues()">
             </div>
             <div class="form-group">
                 <label for="tds">TDS (ppm):</label>
                 <input type="range" id="tds" name="tds" min="0" max="2000" step="10" value="40" oninput="updateValues()" onchange="updateValues()">
-                <output id="tdsOutput">40</output>
+                <input type="number" id="tdsOutput" min="0" max="2000" step="10" value="40" oninput="updateValues()">
             </div>
             <div class="form-group">
                 <label for="temperature">Temperatura (°C):</label>
                 <input type="range" id="temperature" name="temperature" min="0" max="40" step="0.1" value="25" oninput="updateValues()" onchange="updateValues()">
-                <output id="temperatureOutput">25</output>
+                <input type="number" id="temperatureOutput" min="0" max="40" step="0.1" value="25" oninput="updateValues()">
             </div>
         </div>
         <div class="result-container">
-            <h3 style="font-size: 2em;">Resultado:</h3>
+            <h3 style="font-size: 1.5em;">Resultado:</h3>
             <p id="resultTF">IL (sin TDS): </p>
             <p id="resultIL">IL (con TDS): </p>
         </div>
     </div>
-
 
     <script>
         function updateValues() {
@@ -144,17 +143,41 @@
             var tds = parseFloat(document.getElementById('tds').value);
             var temperature = parseFloat(document.getElementById('temperature').value);
 
-
+            // Actualiza los valores de los inputs numéricos
             document.getElementById('phOutput').value = ph;
             document.getElementById('alkalinityOutput').value = alkalinity;
             document.getElementById('calciumOutput').value = calcium;
             document.getElementById('tdsOutput').value = tds;
             document.getElementById('temperatureOutput').value = temperature;
 
-
             calculateLangelier(ph, alkalinity, calcium, tds, temperature);
         }
 
+        // Actualiza los valores de los sliders cuando se modifica el valor en los inputs numéricos
+        document.getElementById('phOutput').addEventListener('input', function() {
+            document.getElementById('ph').value = this.value;
+            updateValues();
+        });
+
+        document.getElementById('alkalinityOutput').addEventListener('input', function() {
+            document.getElementById('alkalinity').value = this.value;
+            updateValues();
+        });
+
+        document.getElementById('calciumOutput').addEventListener('input', function() {
+            document.getElementById('calcium').value = this.value;
+            updateValues();
+        });
+
+        document.getElementById('tdsOutput').addEventListener('input', function() {
+            document.getElementById('tds').value = this.value;
+            updateValues();
+        });
+
+        document.getElementById('temperatureOutput').addEventListener('input', function() {
+            document.getElementById('temperature').value = this.value;
+            updateValues();
+        });
 
         function calculateLangelier(ph, alkalinity, calcium, tds, temperature) {
             // Cálculo de TF (F2)
@@ -168,12 +191,10 @@
             // Cálculo del índice de saturación de Langelier con TDS (J2)
             var IL_TDS = ph - ((9.3 + (Math.log10(tds) - 1) / 10 + (-13.12 * Math.log10(temperature + 273.15) + 34.55)) - (Math.log10(calcium) - 0.4 + Math.log10(alkalinity)));
 
-
             document.getElementById('resultTF').innerHTML = '<a href="https://i.imgur.com/630GaIp.jpg" target="_blank">IL (sin TDS): ' + IL_sin_TDS.toFixed(6) + '</a>';
             document.getElementById('resultIL').innerHTML = '<a href="https://i.imgur.com/IVsJitx.png" target="_blank">IL (con TDS): ' + IL_TDS.toFixed(6) + '</a>';
             
         }
-
 
         // Initialize display
         updateValues();
