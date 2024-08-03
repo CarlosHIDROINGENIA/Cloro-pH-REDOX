@@ -11,13 +11,14 @@
             margin: 0;
             padding: 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
         }
         .model-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 45%;
+            width: 100%;
+            max-width: 800px;
         }
         .form-container {
             width: 100%;
@@ -26,36 +27,36 @@
         .form-group {
             display: flex;
             align-items: center;
-            margin-bottom: 1em; /* Reducir espacio entre sliders */
+            margin-bottom: 1em;
         }
         .form-group label {
             margin-right: 10px;
             width: 150px;
             text-align: left;
-            font-size: 1.5em; /* Ajustar tamaño de las etiquetas */
+            font-size: 1.5em;
         }
         .form-group input[type="range"] {
             flex: 1;
-            height: 30px; /* Altura del control deslizante */
+            height: 30px;
             margin: 0 10px;
             appearance: none;
         }
         .form-group input[type="range"]::-webkit-slider-runnable-track {
-            height: 30px; /* Hacer la pista del slider más ancha */
+            height: 30px;
             background: #ddd;
             border: none;
             border-radius: 3px;
         }
         .form-group input[type="range"]::-webkit-slider-thumb {
             width: 30px;
-            height: 30px; /* Hacer el deslizador más ancho */
+            height: 30px;
             background: #000;
             border: none;
             border-radius: 3px;
             cursor: pointer;
             -webkit-appearance: none;
             appearance: none;
-            margin-top: -5px; /* Ajustar la posición vertical del deslizador */
+            margin-top: -5px;
         }
         .form-group input[type="range"]#ph::-webkit-slider-runnable-track {
             background: blue;
@@ -67,8 +68,8 @@
             background: yellow;
         }
         .form-group output {
-            width: 80px; /* Ajustar las ventanas de información */
-            font-size: 1.5em; /* Aumentar tamaño de fuente */
+            width: 80px;
+            font-size: 1.5em;
             text-align: right;
         }
         h2, p {
@@ -77,11 +78,12 @@
         }
         .chart-container {
             width: 100%;
-            max-width: 800px; /* Limitar el ancho máximo del gráfico */
+            max-width: 800px;
         }
         .functions-text {
             text-align: left;
             margin-top: 1em;
+            font-size: 12px;
         }
         .functions-text p {
             margin: 0;
@@ -92,9 +94,9 @@
         .functions-text .italic {
             font-style: italic;
         }
-        #cloroRedoxChartServovendi, #cloroRedoxChartHanna {
+        #cloroRedoxChartHanna {
             width: 100%;
-            height: 400px; /* Ajustar la altura del gráfico */
+            height: 400px;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -102,45 +104,9 @@
 <body>
     <div class="model-container">
         <div class="form-container">
-            <h2><a href="https://i.imgur.com/OdsCFP5.png" target="_blank">Modelo en base a datos Servovendi</a></h2>
-            <p style="margin-top: 0;">Cloro y REDOX se recalculan en función del nivel de pH.</p>
-            <br><br> <!-- Añadir espacio adicional -->
-            <div class="form-group">
-                <label for="phServovendi">pH:</label>
-                <input type="range" id="phServovendi" name="ph" min="5" max="9" step="0.1" value="7.3" oninput="updatePHServovendi()" onchange="updatePHServovendi()">
-                <output id="phOutputServovendi">7.3</output>
-            </div>
-            <div class="form-group">
-                <label for="cloroServovendi">Cloro (ppm):</label>
-                <input type="range" id="cloroServovendi" name="cloro" min="0" max="14" step="0.1" value="1.5" oninput="updateCloroServovendi()" onchange="updateCloroServovendi()">
-                <output id="cloroOutputServovendi">1.5</output>
-            </div>
-            <div class="form-group">
-                <label for="redoxServovendi">Redox (mV):</label>
-                <input type="range" id="redoxServovendi" name="redox" min="500" max="1000" step="1" value="650" oninput="updateRedoxServovendi()" onchange="updateRedoxServovendi()">
-                <output id="redoxOutputServovendi">650</output>
-            </div>
-        </div>
-        <div class="chart-container">
-            <canvas id="cloroRedoxChartServovendi"></canvas>
-        </div>
-        <div class="functions-text" style="font-size: 12px;">
-        <p class="bold">Funciones:</p>
-        <p class="italic">pH=18.0621+1.9231⋅log10(Cloro)−0.0154⋅Redox</p>
-        <p class="italic">Cloro=exp(−40.2452343879796+2.88637500981273⋅ln(pH)+5.28502024099347⋅ln(Redox))</p>
-        <p class="italic">Redox=exp(7.61622745163393+0.186437980601203⋅ln(Cloro)−0.546142659478283⋅ln(pH))</p>
-        </div>
-
-    </div>
-
-
-
-
-    <div class="model-container">
-        <div class="form-container">
             <h2><a href="https://i.imgur.com/NWi2c4a.png" target="_blank">Modelo en base a gráfico Hanna</a></h2>
             <p style="margin-top: 0;">Cloro y REDOX se recalculan en función del nivel de pH.</p>
-            <br><br> <!-- Añadir espacio adicional -->
+            <br><br>
             <div class="form-group">
                 <label for="phHanna">pH:</label>
                 <input type="range" id="phHanna" name="ph" min="5" max="9" step="0.1" value="7.3" oninput="updatePHHanna()" onchange="updatePHHanna()">
@@ -160,7 +126,7 @@
         <div class="chart-container">
             <canvas id="cloroRedoxChartHanna"></canvas>
         </div>
-        <div class="functions-text" style="font-size: 12px;">
+        <div class="functions-text">
             <p class="bold">Funciones:</p>
             <p class="italic">pH=5.977+0.688⋅log(Cloro)−0.013⋅Redox</p>
             <p class="italic">Cloro=exp(−136.435977779733+16.1252126129022⋅ln(Redox)+15.4347679571461⋅ln(pH))</p>
@@ -168,178 +134,7 @@
         </div>
     </div>
 
-
-
-
     <script>
-        // Servovendi Model
-        const ctxServovendi = document.getElementById('cloroRedoxChartServovendi').getContext('2d');
-        let chartServovendi = new Chart(ctxServovendi, {
-            type: 'scatter',
-            data: {
-                datasets: [{
-                    data: [],
-                    backgroundColor: 'red',
-                    pointRadius: 10
-                },
-                {
-                    data: [],
-                    type: 'line',
-                    borderColor: 'blue',
-                    fill: false
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    x: {
-                        type: 'linear',
-                        position: 'bottom',
-                        title: {
-                            display: true,
-                            text: 'Cloro (ppm)'
-                        },
-                        min: 0,
-                        max: 14
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Redox (mV)'
-                        },
-                        min: 500,
-                        max: 1000
-                    }
-                }
-            }
-        });
-
-
-
-
-        function updatePHServovendi() {
-            const ph = parseFloat(document.getElementById('phServovendi').value);
-            const redox = parseFloat(document.getElementById('redoxServovendi').value);
-            const calculatedCloro = calculateCloroServovendi(ph, redox);
-            document.getElementById('phOutputServovendi').value = ph;
-
-
-
-
-            // Update cloro slider and output
-            document.getElementById('cloroServovendi').value = calculatedCloro.toFixed(2);
-            document.getElementById('cloroOutputServovendi').value = calculatedCloro.toFixed(2);
-
-
-
-
-            updateChartServovendi(calculatedCloro, redox, ph);
-        }
-
-
-
-
-        function updateCloroServovendi() {
-            const ph = parseFloat(document.getElementById('phServovendi').value);
-            const cloro = parseFloat(document.getElementById('cloroServovendi').value);
-            const calculatedRedox = calculateRedoxServovendi(cloro, ph);
-            document.getElementById('cloroOutputServovendi').value = cloro;
-
-
-
-
-            // Update redox slider and output
-            document.getElementById('redoxServovendi').value = calculatedRedox.toFixed(0);
-            document.getElementById('redoxOutputServovendi').value = calculatedRedox.toFixed(0);
-
-
-
-
-            updateChartServovendi(cloro, calculatedRedox, ph);
-        }
-
-
-
-
-        function updateRedoxServovendi() {
-            const ph = parseFloat(document.getElementById('phServovendi').value);
-            const redox = parseFloat(document.getElementById('redoxServovendi').value);
-            const calculatedCloro = calculateCloroServovendi(ph, redox);
-            document.getElementById('redoxOutputServovendi').value = redox;
-
-
-
-
-            // Update cloro slider and output
-            document.getElementById('cloroServovendi').value = calculatedCloro.toFixed(2);
-            document.getElementById('cloroOutputServovendi').value = calculatedCloro.toFixed(2);
-
-
-
-
-            updateChartServovendi(calculatedCloro, redox, ph);
-        }
-
-
-
-
-        function calculateCloroServovendi(ph, redox) {
-            return Math.exp(-40.2452343879796 + 2.88637500981273 * Math.log(ph) + 5.28502024099347 * Math.log(redox));
-        }
-
-
-
-
-        function calculateRedoxServovendi(cloro, ph) {
-            return Math.exp(7.61622745163393 + 0.186437980601203 * Math.log(cloro) - 0.546142659478283 * Math.log(ph));
-        }
-
-
-
-
-        function calculatePHServovendi(cloro, redox) {
-            return 18.0621 + 1.9231 * Math.log10(cloro) - 0.0154 * redox;
-        }
-
-
-
-
-        function updateChartServovendi(cloro, redox, ph) {
-            // Generate data for the line
-            let lineData = [];
-            for (let c = 0; c <= 14; c += 0.1) {
-                let r = calculateRedoxServovendi(c, ph);
-                if (r >= 500 && r <= 1000) {
-                    lineData.push({ x: c, y: r });
-                }
-            }
-
-
-
-
-            // Update chart data
-            chartServovendi.data.datasets[0].data = [{ x: cloro, y: redox }];
-            chartServovendi.data.datasets[1].data = lineData;
-            chartServovendi.update();
-        }
-
-
-
-
-        // Initialize Servovendi Model
-        updatePHServovendi();
-        updateCloroServovendi();
-        updateRedoxServovendi();
-
-
-
-
         // Hanna Model
         const ctxHanna = document.getElementById('cloroRedoxChartHanna').getContext('2d');
         let chartHanna = new Chart(ctxHanna, {
@@ -388,30 +183,18 @@
             }
         });
 
-
-
-
         function updatePHHanna() {
             const ph = parseFloat(document.getElementById('phHanna').value);
             const redox = parseFloat(document.getElementById('redoxHanna').value);
             const calculatedCloro = calculateCloroHanna(ph, redox);
             document.getElementById('phOutputHanna').value = ph;
 
-
-
-
             // Update cloro slider and output
             document.getElementById('cloroHanna').value = calculatedCloro.toFixed(2);
             document.getElementById('cloroOutputHanna').value = calculatedCloro.toFixed(2);
 
-
-
-
             updateChartHanna(calculatedCloro, redox, ph);
         }
-
-
-
 
         function updateCloroHanna() {
             const ph = parseFloat(document.getElementById('phHanna').value);
@@ -419,21 +202,12 @@
             const calculatedRedox = calculateRedoxHanna(cloro, ph);
             document.getElementById('cloroOutputHanna').value = cloro;
 
-
-
-
             // Update redox slider and output
             document.getElementById('redoxHanna').value = calculatedRedox.toFixed(0);
             document.getElementById('redoxOutputHanna').value = calculatedRedox.toFixed(0);
 
-
-
-
             updateChartHanna(cloro, calculatedRedox, ph);
         }
-
-
-
 
         function updateRedoxHanna() {
             const ph = parseFloat(document.getElementById('phHanna').value);
@@ -441,42 +215,24 @@
             const calculatedCloro = calculateCloroHanna(ph, redox);
             document.getElementById('redoxOutputHanna').value = redox;
 
-
-
-
             // Update cloro slider and output
             document.getElementById('cloroHanna').value = calculatedCloro.toFixed(2);
             document.getElementById('cloroOutputHanna').value = calculatedCloro.toFixed(2);
 
-
-
-
             updateChartHanna(calculatedCloro, redox, ph);
         }
-
-
-
 
         function calculateCloroHanna(ph, redox) {
             return Math.exp(-136.435977779733 + 16.1252126129022 * Math.log(redox) + 15.4347679571461 * Math.log(ph));
         }
 
-
-
-
         function calculateRedoxHanna(cloro, ph) {
             return Math.exp(8.4626949708283 - 0.957182291338993 * Math.log(ph) + 0.0579010507063268 * Math.log(cloro));
         }
 
-
-
-
         function calculatePHHanna(cloro, redox) {
             return 5.977 + 0.688 * Math.log(cloro) - 0.013 * redox;
         }
-
-
-
 
         function updateChartHanna(cloro, redox, ph) {
             // Generate data for the line
@@ -488,17 +244,11 @@
                 }
             }
 
-
-
-
             // Update chart data
             chartHanna.data.datasets[0].data = [{ x: cloro, y: redox }];
             chartHanna.data.datasets[1].data = lineData;
             chartHanna.update();
         }
-
-
-
 
         // Initialize Hanna Model
         updatePHHanna();
@@ -507,5 +257,3 @@
     </script>
 </body>
 </html>
-
-
