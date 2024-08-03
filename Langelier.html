@@ -111,9 +111,7 @@
             margin-top: 20px;
             text-align: left;
             line-height: 1.4;
-        }
-        .footer-text .tabbed {
-            margin-left: 10ch; /* Tabulación de aproximadamente 10 caracteres */
+            white-space: pre-wrap; /* Preserve espacios y saltos de línea */
         }
         .spacer {
             height: 2em; /* Añadir un espacio vertical */
@@ -169,10 +167,13 @@
             </div>
         </div>
         <div class="footer-text">
-            * Pinchar sobre cada resultado para abrir enlace explicativo de metodología de cálculo.<br>
-            <span class="tabbed">Alcalinidad y Dureza: ppm CaCO₃</span><br>
-            <span class="tabbed">TDS: ppm</span><br>
-            <span class="tabbed">Temperatura: ºC</span>
+* Pinchar sobre cada resultado para abrir
+  enlace explicativo de metodología de cálculo.
+  Unidades de medida:
+    Alcalinidad: ppm CaCO₃
+    Dureza:      ppm CaCO₃
+    TDS:         ppm
+    Temperatura: ºC
         </div>
     </div>
 
