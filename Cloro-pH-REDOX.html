@@ -129,9 +129,9 @@
         </div>
         <div class="functions-text">
             <p class="bold">Funciones:</p>
-            <p class="italic">pH=5.977+0.688⋅log(Cloro)−0.013⋅Redox</p>
-            <p class="italic">Cloro=exp(−136.435977779733+16.1252126129022⋅ln(Redox)+15.4347679571461⋅ln(pH))</p>
-            <p class="italic">Redox=exp(8.4626949708283−0.957182291338993⋅ln(pH)+0.0579010507063268⋅ln(Cloro))</p>
+            <p class="italic">pH = 56,1715588905171 + 0,457584627337344 ⋅ ln(Cloro) − 7,45400283788149 ⋅ ln(REDOX)</p>
+            <p class="italic">Cloro = exp(−123,584839517418 + 13,222731920566 ⋅ ln(pH) + 14,8542373277415 ⋅ ln(REDOX))</p>
+            <p class="italic">REDOX = exp(8,31407844700388 − 0,886134344503628 ⋅ ln(pH) + 0,0612188704196701 ⋅ ln(Cloro))</p>
         </div>
     </div>
 
@@ -239,11 +239,11 @@
         }
 
         function calculateCloroHanna(ph, redox) {
-            return Math.exp(-136.435977779733 + 16.1252126129022 * Math.log(redox) + 15.4347679571461 * Math.log(ph));
+            return Math.exp(-123.584839517418 + 13.222731920566 * Math.log(ph) + 14.8542373277415 * Math.log(redox));
         }
 
         function calculateRedoxHanna(cloro, ph) {
-            return Math.exp(8.4626949708283 - 0.957182291338993 * Math.log(ph) + 0.0579010507063268 * Math.log(cloro));
+            return Math.exp(8.31407844700388 - 0.886134344503628 * Math.log(ph) + 0.0612188704196701 * Math.log(cloro));
         }
 
         function updateChartHanna(cloro, redox, ph) {
